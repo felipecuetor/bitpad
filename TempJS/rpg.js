@@ -15,7 +15,7 @@ function checkKey(e) {
 
         // up arrow
         if(checkCollisionUp()==0){
-drawMapBehindCharacter();
+          drawMapBehindCharacter();
           y = y - 1;
 
           drawCharacter();
@@ -37,7 +37,7 @@ drawMapBehindCharacter();
       console.log("KeyLeft");
        // left arrow
        if(checkCollisionLeft()==0){
-  drawMapBehindCharacter();
+          drawMapBehindCharacter();
          x = x - 1;
 
          drawCharacter();
@@ -48,7 +48,7 @@ drawMapBehindCharacter();
       console.log("KeyRight");
        // right arrow
        if(checkCollisionRight()==0){
-drawMapBehindCharacter();
+         drawMapBehindCharacter();
          x = x + 1;
 
          drawCharacter();
