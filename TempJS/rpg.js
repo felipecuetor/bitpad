@@ -224,7 +224,12 @@ blocks[12][5] = 1;
 blocks[12][6] = 1;
 blocks[12][7] = 1;
 //Define elements with collision
+blocks[3][4] = 1;
 blocks[5][2] = 1;
 blocks[7][2] = 1;
+blocks[8][2] = 1;
+blocks[9][2] = 1;
+blocks[11][2] = 1;
+
 
 drawMapBehindCharacter();
