@@ -1,8 +1,9 @@
 img.unit{
-
+  width:99%;
 }
 
 div.rpgContainer{
+  border-style: dotted;
   height: 90%;
   width: 94%;
 }
