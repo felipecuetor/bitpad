@@ -1,9 +1,12 @@
 
 //measured left to right
-var x = 1;
+var x = 3;
 
 //measured top to bottom
-var y = 1;
+var y = 3;
+
+//direction character is facing 1=up 2=right 3=down 4=left
+var dir = 3;
 
 document.onkeydown = checkKey;
 
@@ -11,56 +14,66 @@ document.onkeydown = checkKey;
 function checkKey(e) {
     e = e || window.event;
     if (e.keyCode == '38') {
+      dir = 1;
       console.log("KeyUp");
 
         // up arrow
         if(checkCollisionUp()==0){
           drawMapBehindCharacter();
           y = y - 1;
-
-          drawCharacter();
-          console.log(x+" "+y);
       }
+      drawCharacter();
     }
     else if (e.keyCode == '40') {
+      dir = 3;
         console.log("KeyDown");
         // down arrow
         if(checkCollisionDown()==0){
           drawMapBehindCharacter();
           y = y + 1;
-
-          drawCharacter();
           console.log(x+" "+y);
       }
+      drawCharacter();
     }
     else if (e.keyCode == '37') {
+      dir = 4;
       console.log("KeyLeft");
        // left arrow
        if(checkCollisionLeft()==0){
           drawMapBehindCharacter();
          x = x - 1;
-
-         drawCharacter();
          console.log(x+" "+y);
        }
+       drawCharacter();
     }
     else if (e.keyCode == '39') {
+      dir = 2;
       console.log("KeyRight");
        // right arrow
        if(checkCollisionRight()==0){
          drawMapBehindCharacter();
          x = x + 1;
-
-         drawCharacter();
          console.log(x+" "+y);
        }
+       drawCharacter();
     }
 }
 
 function drawCharacter()
 {
   var temp = document.getElementById("elem-"+x+"-"+y);
-  temp.setAttribute("src", "./data/textures/character.png");
+  if(dir==3){
+    temp.setAttribute("src", "./data/textures/character3.png");
+  }
+  else if(dir==1){
+    temp.setAttribute("src", "./data/textures/character1.png");
+  }
+  else if(dir==2){
+    temp.setAttribute("src", "./data/textures/character2.png");
+  }
+  else if(dir==4){
+    temp.setAttribute("src", "./data/textures/character4.png");
+  }
 }
 
 function drawMapBehindCharacter()
@@ -90,11 +103,6 @@ function checkCollisionLeft()
   console.log(blocks[x-1][y]);
   return temp = blocks[x-1][y];
 }
-
-
-//Define elements with collision
-
-
 
 //Define limits of the character ie outer walls there are no pixels here
 function Create2DArray(rows) {
@@ -172,5 +180,51 @@ blocks[10][7] = 1;
 blocks[11][7] = 1;
 blocks[12][7] = 1;
 
+//walls
+blocks[1][6] = 1;
+blocks[2][6] = 1;
+blocks[3][6] = 1;
+blocks[4][6] = 1;
+blocks[5][6] = 1;
+blocks[6][6] = 1;
+blocks[7][6] = 1;
+blocks[8][6] = 1;
+blocks[9][6] = 1;
+blocks[10][6] = 1;
+blocks[11][6] = 1;
+blocks[12][6] = 1;
+
+blocks[1][1] = 1;
+blocks[2][1] = 1;
+blocks[3][1] = 1;
+blocks[4][1] = 1;
+blocks[5][1] = 1;
+blocks[6][1] = 1;
+blocks[7][1] = 1;
+blocks[8][1] = 1;
+blocks[9][1] = 1;
+blocks[10][1] = 1;
+blocks[11][1] = 1;
+blocks[12][1] = 1;
+
+blocks[1][1] = 1;
+blocks[1][2] = 1;
+blocks[1][3] = 1;
+blocks[1][4] = 1;
+blocks[1][5] = 1;
+blocks[1][6] = 1;
+blocks[1][7] = 1;
+
+blocks[12][0] = 1;
+blocks[12][1] = 1;
+blocks[12][2] = 1;
+blocks[12][3] = 1;
+blocks[12][4] = 1;
+blocks[12][5] = 1;
+blocks[12][6] = 1;
+blocks[12][7] = 1;
+//Define elements with collision
+blocks[5][2] = 1;
+blocks[7][2] = 1;
 
 drawMapBehindCharacter();
