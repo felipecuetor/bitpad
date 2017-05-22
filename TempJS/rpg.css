@@ -1,15 +1,42 @@
 img.unit{
-  width:138%;
+  width:172%;
 }
 
 div.rpgContainer{
-  border-style: dotted;
-  height: 100%;
+  position: absolute;
+  left: 15%;
+  width: 70%;
+  top: 20%;
 }
 
 div.column{
 }
 
+div.menuButton{
+  font-size:35%;
+}
+
+a{
+  color: #FDE9C1;
+  font-size:50%;
+}
+
+a:hover{
+  font-size: 80%;
+  color: #FDE9C1;
+}
+
 h1{
-  color: Green;
+  color: #FDE9C1;
+  font-family: "Courier New", Courier New, monospace;
+  padding: 15px;
+}
+
+div.menuPrincipal{
+  position: absolute;
+  top : 0px;
+  width: 100%;
+  background-color: #AA8439;
+  padding: 0px;
+  margin=0px;
 }
