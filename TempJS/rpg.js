@@ -8,54 +8,36 @@ var y = 3;
 //direction character is facing 1=up 2=right 3=down 4=left
 var dir = 3;
 
+//Menu is visible if 1
+var menu = 0;
+
+//Type of menu on view
+//1 is a message  2 is a menu 3 is a list of elements 4 is textField  5 is a canvas
+var menuType
+
 document.onkeydown = checkKey;
 
 //Handles Key down
 function checkKey(e) {
     e = e || window.event;
-    if (e.keyCode == '38') {
-      dir = 1;
-      console.log("KeyUp");
-
-        // up arrow
-        if(checkCollisionUp()==0){
-          drawMapBehindCharacter();
-          y = y - 1;
-      }
-      drawCharacter();
+    if(e.keyCode == '17'){
+      checkInteraction();
+    }
+    else if (e.keyCode == '38') {
+      if(menu==1){menuUp();}
+      else{keyUpCharacter();}
     }
     else if (e.keyCode == '40') {
-      dir = 3;
-        console.log("KeyDown");
-        // down arrow
-        if(checkCollisionDown()==0){
-          drawMapBehindCharacter();
-          y = y + 1;
-          console.log(x+" "+y);
-      }
-      drawCharacter();
+      if(menu==1){menuDown();}
+      else{keyDownCharacter();}
     }
     else if (e.keyCode == '37') {
-      dir = 4;
-      console.log("KeyLeft");
-       // left arrow
-       if(checkCollisionLeft()==0){
-          drawMapBehindCharacter();
-         x = x - 1;
-         console.log(x+" "+y);
-       }
-       drawCharacter();
+      if(menu==1){menuLeft();}
+      else{keyLeftCharacter();}
     }
     else if (e.keyCode == '39') {
-      dir = 2;
-      console.log("KeyRight");
-       // right arrow
-       if(checkCollisionRight()==0){
-         drawMapBehindCharacter();
-         x = x + 1;
-         console.log(x+" "+y);
-       }
-       drawCharacter();
+      if(menu==1){menuLeft();}
+      else{keyRightCharacter();}
     }
 }
 
@@ -81,6 +63,167 @@ function drawMapBehindCharacter()
   var temp = document.getElementById("elem-"+x+"-"+y);
   temp.setAttribute("src", "./data/textures/empty.png");
 }
+
+//Define type of block in each square
+var blockTypeMap = Create2DArray(14);
+blockTypeMap[9][6] = "door";
+blockTypeMap[5][2] = "desk";
+blockTypeMap[8][2] = "library";
+blockTypeMap[9][2] = "library";
+blockTypeMap[11][2] = "library";
+blockTypeMap[2][2] = "canvas";
+blockTypeMap[7][2] = "bed";
+blockTypeMap[3][4] = "table";
+
+function menuInteraction()
+{
+  if(menuType==1)
+  {
+    dismissMenu();
+  }
+}
+
+function checkInteraction()
+{
+  var blockType = "0";
+  if(dir == 1)
+  {
+    blockType = blockTypeMap[x][y-1];
+  }
+  else if(dir == 2)
+  {
+    blockType = blockTypeMap[x+1][y];
+  }
+  else if(dir == 3)
+  {
+    blockType = blockTypeMap[x][y+1];
+  }
+  else if(dir == 4)
+  {
+    blockType = blockTypeMap[x-1][y];
+  }
+
+  if(menu==1)
+  {
+    menuInteraction();
+  }
+  else if(blockType == "door")
+  {
+    menuMessage("I wish the developers would LET ME OUT!!!!");
+  }
+  else if(blockType == "desk")
+  {
+    menuMessage("Time to get to work");
+  }
+  else if(blockType == "library")
+  {
+    menuMessage("Dont see any good books");
+  }
+  else if(blockType == "canvas")
+  {
+    menuMessage("I wonder if I have any talent");
+  }
+  else if(blockType == "bed")
+  {
+    menuMessage("Im not sleepy");
+  }
+  else if(blockType == "table")
+  {
+    menuMessage("Why is this table here?");
+  }
+}
+
+function menuMessage(message)
+{
+  var temp = document.getElementById("rpgMenuContainer");
+  temp.setAttribute("style","z-index: 5;")
+  temp = document.getElementById("rpgMenuMessage").innerHTML = message;
+  menu = 1;
+  menuType=1;
+}
+
+function menuUp()
+{
+
+}
+function menuDown()
+{
+
+}
+function menuLeft()
+{
+
+}
+function menuRight()
+{
+
+}
+
+function dismissMenu()
+{
+  menu = 0;
+  menuType=0;
+  var temp = document.getElementById("rpgMenuMessage").innerHTML = "";
+
+ document.getElementById("rpgMenuContainer").setAttribute("style","z-index:5;");
+
+
+
+}
+
+//Action Characer on Arrow key
+function keyUpCharacter()
+{
+  dir = 1;
+  console.log("KeyUp");
+    // up arrow
+    if(checkCollisionUp()==0){
+      drawMapBehindCharacter();
+      y = y - 1;
+  }
+  drawCharacter();
+
+}
+function keyDownCharacter()
+{
+  dir = 3;
+    console.log("KeyDown");
+    // down arrow
+    if(checkCollisionDown()==0){
+      drawMapBehindCharacter();
+      y = y + 1;
+      console.log(x+" "+y);
+  }
+  drawCharacter();
+
+}
+function keyLeftCharacter()
+{
+  dir = 4;
+  console.log("KeyLeft");
+   // left arrow
+   if(checkCollisionLeft()==0){
+      drawMapBehindCharacter();
+     x = x - 1;
+     console.log(x+" "+y);
+   }
+   drawCharacter();
+
+}
+function keyRightCharacter()
+{
+  dir = 2;
+  console.log("KeyRight");
+   // right arrow
+   if(checkCollisionRight()==0){
+     drawMapBehindCharacter();
+     x = x + 1;
+     console.log(x+" "+y);
+   }
+   drawCharacter();
+}
+
+
 
 //Methods to check collision or collision interactions
 function checkCollisionUp()
@@ -114,7 +257,6 @@ function Create2DArray(rows) {
 
   return arr;
 }
-
 var blocks = Create2DArray(14);
 empty();
 
@@ -230,6 +372,5 @@ blocks[7][2] = 1;
 blocks[8][2] = 1;
 blocks[9][2] = 1;
 blocks[11][2] = 1;
-
-
-drawMapBehindCharacter();
+blocks[10][5] = 1;
+blocks[2][2] = 1;

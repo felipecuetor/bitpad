@@ -9,12 +9,21 @@ div.rpgContainer{
   top: 20%;
 }
 
+#rpgMenuContainer{
+  position: absolute;
+  left: 20%;
+  width: 50%;
+  top: 25%;
+  z-index: 5;
+  background-color: gray;
+  background:rgba(173,255,47,0.8);
+  border-style: dotted;
+  font-family: "Courier New", Courier New, monospace;
+}
+
 div.column{
 }
 
-div.menuButton{
-  font-size:35%;
-}
 
 a{
   color: #FDE9C1;
@@ -22,7 +31,6 @@ a{
 }
 
 a:hover{
-  font-size: 80%;
   color: #FDE9C1;
 }
 
@@ -31,6 +39,8 @@ h1{
   font-family: "Courier New", Courier New, monospace;
   padding: 15px;
 }
+
+
 
 div.menuPrincipal{
   position: absolute;
