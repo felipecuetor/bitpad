@@ -13,7 +13,11 @@ var menu = 0;
 
 //Type of menu on view
 //1 is a message  2 is a menu 3 is a list of elements 4 is textField  5 is a canvas
-var menuType
+var menuType;
+var currentMenuSelection = -1;
+var maxElemList = 3;
+
+var dataNotes;
 
 document.onkeydown = checkKey;
 
@@ -74,11 +78,88 @@ blockTypeMap[11][2] = "library";
 blockTypeMap[2][2] = "canvas";
 blockTypeMap[7][2] = "bed";
 blockTypeMap[3][4] = "table";
+blockTypeMap[10][5] = "coat";
+blockTypeMap[3][1] = "painting";
 
 function menuInteraction()
 {
   if(menuType==1)
   {
+    dismissMenu();
+  }
+  if(menuType==2)
+  {
+    var selection = document.getElementById("elem"+currentMenuSelection).innerHTML;
+
+    if(selection=="Exit")
+    {
+      dismissMenu();
+    }
+    else if(selection=="New note")
+    {
+      menuType=4;
+      newMenuInnerHTML="Note name: <input type='text' id='noteName'><br><br><textarea id='noteContent'></textarea><br/><span>----- Press control to save -----</span>";
+      document.getElementById("rpgMenuContainer").innerHTML = newMenuInnerHTML;
+    }
+    else if(selection=="New canvas"){
+      menuType=5;
+      newMenuInnerHTML="<canvas id='canvas' width='600' height='350' style='border:1px solid'></canvas><br/><span>----- Press control to save -----</span>";
+      document.getElementById("rpgMenuContainer").innerHTML = newMenuInnerHTML;
+      $('canvas').paintable();
+    }
+    else if(selection=="Edit notes"){
+      var noteList=[];
+      cont = 0;
+      $.getJSON( "https://bitpad-1.herokuapp.com/all", function( data ) {
+        $.each(data, function(title, note){
+          noteList[cont]=note.title;
+          cont=cont+1;
+        })
+        noteList[cont]="Exit";
+        maxElemList = noteList.length;
+        openMenuWithOptions(noteList);
+        dataNotes=data;
+        });
+
+
+    }
+    else if(selection=="Edit canvas"){
+      $.getJSON( "https://bitpad-1.herokuapp.com/all", function( data ) {
+        $.each(data, function(title, note){
+          noteList[cont]=note.title;
+          cont=cont+1;
+        })
+        noteList[cont]="Exit";
+        maxElemList = noteList.length;
+        openMenuWithOptions(noteList);
+        dataNotes=data;
+
+        });
+    }
+    else{
+
+    }
+  }
+  else if(menuType==4)
+  {
+
+    var noteName =document.getElementById("noteName").value;
+    var noteContent = document.getElementById("noteContent").value;
+
+    $.post(
+      "https://bitpad-1.herokuapp.com/noteId",
+      {"user":"11",
+      "note":noteContent,
+      "title":noteName} ,
+      function(result){
+        $("span").html(result);
+      });
+
+      dismissMenu();
+  }
+  else if(menuType==5)
+  {
+
     dismissMenu();
   }
 }
@@ -113,31 +194,78 @@ function checkInteraction()
   }
   else if(blockType == "desk")
   {
-    menuMessage("Time to get to work");
+    viewD3();
   }
   else if(blockType == "library")
   {
-    menuMessage("Dont see any good books");
+    var elementos=[];
+    elementos[0]="New note";
+    elementos[1]="Edit notes";
+    elementos[2]="Exit";
+    openMenuWithOptions(elementos);
+    maxElemList=3;
   }
   else if(blockType == "canvas")
   {
-    menuMessage("I wonder if I have any talent");
+    var elementos=[];
+    elementos[0]="New canvas";
+    elementos[1]="Edit canvas";
+    elementos[2]="Exit";
+    openMenuWithOptions(elementos);
+    maxElemList=3;
   }
   else if(blockType == "bed")
   {
-    menuMessage("Im not sleepy");
+    menuMessage("Im not sleepy.");
   }
   else if(blockType == "table")
   {
     menuMessage("Why is this table here?");
   }
+  else if(blockType == "coat")
+  {
+    menuMessage("Wait... This isn't mine.");
+  }
+  else if(blockType == "painting")
+  {
+    menuMessage("Nop... I dont have ANY talent.");
+  }
 }
 
+
+function viewD3()
+{
+  var newMenuInnerHTML="<iframe src='./d3BarChart'></iframe>";
+  var temp = document.getElementById("rpgMenuContainer").innerHTML=newMenuInnerHTML;
+  menu = 1;
+  menuType=1;
+}
+
+
+function openMenuWithOptions(options)
+{
+  var cont = 0;
+  var newMenuInnerHTML="";
+  while(cont<options.length)
+  {
+    newMenuInnerHTML=newMenuInnerHTML+"<span id='arrow"+cont+"'></span><span id='elem"+cont+"'>"+options[cont]+"</span><br/>";
+    cont=cont+1;
+  }
+  newMenuInnerHTML=newMenuInnerHTML+"<br/><span>----- Press control to select -----</span>";
+  document.getElementById("rpgMenuContainer").innerHTML = newMenuInnerHTML;
+  document.getElementById("arrow0").innerHTML = ">";
+  menu = 1;
+  menuType=2;
+  currentMenuSelection=0;
+
+}
+
+
+//Shows a message on the screen
 function menuMessage(message)
 {
-  var temp = document.getElementById("rpgMenuContainer");
-  temp.setAttribute("style","z-index: 5;")
-  temp = document.getElementById("rpgMenuMessage").innerHTML = message;
+  var newMenuInnerHTML="<span id='rpgMenuMessage'>"+message+"</span><br/><span>----- Press control to continue -----</span>";
+  var temp = document.getElementById("rpgMenuContainer").innerHTML=newMenuInnerHTML;
   menu = 1;
   menuType=1;
 }
@@ -145,10 +273,23 @@ function menuMessage(message)
 function menuUp()
 {
 
+  if(currentMenuSelection==0)
+  {
+    return;
+  }
+  document.getElementById("arrow"+currentMenuSelection).innerHTML="";
+  currentMenuSelection=currentMenuSelection-1;
+  document.getElementById("arrow"+currentMenuSelection).innerHTML=">";
 }
 function menuDown()
 {
-
+  if(currentMenuSelection==maxElemList-1)
+  {
+    return;
+  }
+  document.getElementById("arrow"+currentMenuSelection).innerHTML="";
+  currentMenuSelection=currentMenuSelection+1;
+  document.getElementById("arrow"+currentMenuSelection).innerHTML=">";
 }
 function menuLeft()
 {
@@ -163,7 +304,7 @@ function dismissMenu()
 {
   menu = 0;
   menuType=0;
-  var temp = document.getElementById("rpgMenuMessage").innerHTML = "";
+  var temp = document.getElementById("rpgMenuContainer").innerHTML = "";
 
  document.getElementById("rpgMenuContainer").setAttribute("style","z-index:5;");
 
