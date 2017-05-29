@@ -1,0 +1,52 @@
+img.unit{
+  width:172%;
+}
+
+div.rpgContainer{
+  position: absolute;
+  left: 15%;
+  width: 70%;
+  top: 20%;
+}
+
+#rpgMenuContainer{
+  position: absolute;
+  left: 20%;
+  width: 50%;
+  top: 25%;
+  z-index: 5;
+  background-color: gray;
+  background:rgba(173,255,47,0.8);
+  border-style: dotted;
+  font-family: "Courier New", Courier New, monospace;
+}
+
+div.column{
+}
+
+
+a{
+  color: #FDE9C1;
+  font-size:50%;
+}
+
+a:hover{
+  color: #FDE9C1;
+}
+
+h1{
+  color: #FDE9C1;
+  font-family: "Courier New", Courier New, monospace;
+  padding: 15px;
+}
+
+
+
+div.menuPrincipal{
+  position: absolute;
+  top : 0px;
+  width: 100%;
+  background-color: #AA8439;
+  padding: 0px;
+  margin:0px;
+}
